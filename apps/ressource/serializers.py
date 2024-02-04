@@ -7,20 +7,37 @@ class TechnicienListSerializer(serializers.ModelSerializer):
         model = Technicien
         fields = ['id', 'name', 'prenom', 'tel', 'email', 'matricule']
 
-
 class TechnicienDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Technicien
         fields = '__all__'
 
+class TechnicienCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Technicien
+        fields = '__all__'
+
+class TechnicienUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Technicien
+        fields = '__all__'
 
 class StateDayListSerializer(serializers.ModelSerializer):
     class Meta:
         model = StateDay
         fields = '__all__'
 
-
 class StateDayDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StateDay
+        fields = '__all__'
+
+class StateDayCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StateDay
+        fields = '__all__'
+
+class StateDayUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = StateDay
         fields = '__all__'

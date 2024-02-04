@@ -39,7 +39,7 @@ class ActiviteViewSet(MultipleSerializerViewSet):
 
 class TacheViewSet(MultipleSerializerViewSet):
     queryset = Tache.objects.all()
-    filterset_class = TacheFilter
+    #filterset_class = TacheFilter
     serializer_class = TacheListSerializer
     serializers = {
         'list': TacheListSerializer,

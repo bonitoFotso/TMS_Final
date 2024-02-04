@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-from apps.ressource.serialisers import TechnicienListSerializer
+from apps.ressource.serializers import TechnicienListSerializer
 
 
 class DonneeJourListSerializer(serializers.ModelSerializer):
