@@ -2,7 +2,9 @@ from .models import *
 from .serializers import *
 from .filters import TacheFilter, RapportFilter, TechnicienTacheFilter
 from core.utils import MultipleSerializerViewSet
-
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from .models import TechnicienTache, Tache
 
 class DonneeJourViewSet(MultipleSerializerViewSet):
     queryset = DonneeJour.objects.all()
@@ -39,7 +41,7 @@ class ActiviteViewSet(MultipleSerializerViewSet):
 
 class TacheViewSet(MultipleSerializerViewSet):
     queryset = Tache.objects.all()
-    #filterset_class = TacheFilter
+    filterset_class = TacheFilter
     serializer_class = TacheListSerializer
     serializers = {
         'list': TacheListSerializer,
@@ -75,3 +77,25 @@ class RapportViewSet(MultipleSerializerViewSet):
     }
 
 
+class TacheTechnicienListView(generics.ListAPIView):
+    serializer_class = TacheListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Récupérer l'ID du technicien à partir des paramètres de requête
+        technicien_id = self.kwargs.get('technicien_id')
+        if technicien_id is not None:
+            # Filtrer les tâches pour obtenir celles assignées à ce technicien
+            return Tache.objects.filter(assignations__technicien_id=technicien_id)
+        else:
+            # Si aucun ID de technicien n'est fourni, renvoyer une liste vide
+            return Tache.objects.none()
+        
+class TacheAppelantListView(generics.ListAPIView):
+    serializer_class = TacheListSerializer
+
+    def get_queryset(self):
+        # Récupérer l'ID de l'appelant à partir des paramètres de requête
+        appelant_id = self.kwargs.get('appelant_id')
+        # Filtrer les tâches en fonction de l'appelant
+        return Tache.objects.filter(appelant_id=appelant_id)

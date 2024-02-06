@@ -19,4 +19,6 @@ urlpatterns = [
     # ...
     # Inclure les URL du routeur dans les URL globales de votre projet
     path('', include(router.urls)),
+    path('taches/technicien/<int:technicien_id>/', TacheTechnicienListView.as_view(), name='tache-technicien-list'),
+    path('taches/appelant/<int:appelant_id>/', TacheAppelantListView.as_view(), name='tache-appelant-list'),
 ]

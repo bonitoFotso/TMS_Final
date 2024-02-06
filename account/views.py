@@ -46,20 +46,18 @@ class UserLoginView(GenericAPIView):
             
             # Récupérer les informations du technicien associé à l'utilisateur
             try:
-                technicien = user.technicien
-                technicien_info = {
+                technicien = user
+                user_info = {
                     "id": technicien.pk,
-                    "photo": technicien.photo.url if technicien.photo else None,
+                    "photo": technicien.profile.url if technicien.profile else None,
                     "name": technicien.name,
-                    "prenom": technicien.prenom,
-                    "tel": technicien.tel,
                     "email": technicien.email,
-                    "matricule": technicien.matricule,
-                    "vitesse_execution": technicien.vitesse_execution,
-                    "efficacite": technicien.efficacite,
+                    #"matricule": technicien.matricule,
+                    #"vitesse_execution": technicien.vitesse_execution,
+                    #"efficacite": technicien.efficacite,
                 }
             except technicien.DoesNotExist:
-                technicien_info = None
+                user_info = None
 
             return Response({
                 'token': token,
@@ -72,7 +70,7 @@ class UserLoginView(GenericAPIView):
                     "helpdesk": user.is_helpdesk,
                     "tech": user.is_technicien,
                 },
-                "technicien": technicien_info,
+                "technicien": user_info,
             }, status=status.HTTP_200_OK)
         else:
             return Response({'errors': {'non_field_errors': ['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)

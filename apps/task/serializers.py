@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from apps.ressource.serializers import TechnicienListSerializer
+from apps.client.serializers import AppelantDetailSerializer
 
 
 class DonneeJourListSerializer(serializers.ModelSerializer):
@@ -61,6 +62,7 @@ class TacheDetailSerializer(serializers.ModelSerializer):
     activite = ActiviteListSerializer(many=True)
     categorie = CategorieListSerializer(many=True)
     assignations = TechnicienTacheListSerializer(many=True)
+    appelant = AppelantDetailSerializer()
 
     class Meta:
         model = Tache
