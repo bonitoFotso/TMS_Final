@@ -18,6 +18,18 @@ def get_tokens_for_user(user):
       'access': str(refresh.access_token),
   }
 
+class UserDetailsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_permissions = user.get_all_permissions()  # Récupère toutes les permissions de l'utilisateur
+        return Response({
+            #'username': user.username,
+            'permissions': list(user_permissions)
+        })
+
+
 
 class UserRegistrationView(GenericAPIView):
   serializer_class = UserRegistrationSerializer
@@ -47,17 +59,19 @@ class UserLoginView(GenericAPIView):
             # Récupérer les informations du technicien associé à l'utilisateur
             try:
                 technicien = user
-                user_info = {
+                technicien_info = {
                     "id": technicien.pk,
-                    "photo": technicien.profile.url if technicien.profile else None,
-                    "name": technicien.name,
-                    "email": technicien.email,
+                    #"photo": technicien.photo.url if technicien.photo else None,
+                    #"name": technicien.name,
+                    #"prenom": technicien.prenom,
+                    #"tel": technicien.tel,
+                    #"email": technicien.email,
                     #"matricule": technicien.matricule,
                     #"vitesse_execution": technicien.vitesse_execution,
                     #"efficacite": technicien.efficacite,
                 }
             except technicien.DoesNotExist:
-                user_info = None
+                technicien_info = None
 
             return Response({
                 'token': token,
@@ -69,8 +83,9 @@ class UserLoginView(GenericAPIView):
                     "admin": user.admin,
                     "helpdesk": user.is_helpdesk,
                     "tech": user.is_technicien,
+                    "photo": user.profile.url,
                 },
-                "technicien": user_info,
+                "technicien": technicien_info,
             }, status=status.HTTP_200_OK)
         else:
             return Response({'errors': {'non_field_errors': ['Email or Password is not Valid']}}, status=status.HTTP_404_NOT_FOUND)

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import UserManager,AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import UserManager,AbstractBaseUser, BaseUserManager, AbstractUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 
 
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     profile = models.ImageField(upload_to='profile/', blank=True, null=True)
